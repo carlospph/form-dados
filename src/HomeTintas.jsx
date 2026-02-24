@@ -176,7 +176,7 @@ function HomeTintas() {
       id: 3,
       titulo: "Casa de Campo",
       categoria: "Residencial",
-      imagem: "https://images.unsplash.com/photo-1512917774080-9mm91f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      imagem: "https://images.unsplash.com/photo-1719348048620-45ed61fc0b48?q=80&w=680&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       descricao: "Pintura rústica com efeitos especiais"
     },
     {
@@ -389,9 +389,6 @@ function HomeTintas() {
           ))}
         </div>
         
-        <div className="projetos-cta">
-          <button className="btn-secondary">Ver Mais Projetos</button>
-        </div>
       </section>
 
       <section id="tops" className="projetos">

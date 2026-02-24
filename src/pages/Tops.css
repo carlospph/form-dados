@@ -4,6 +4,8 @@
     border-radius: 8px;
     margin-bottom: 1rem;
     transition: opacity 0.3s ease-in-out;
+     height: 350px;
+    object-fit: cover;
 }
 
 .thumbnail-gallery {
