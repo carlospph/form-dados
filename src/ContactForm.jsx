@@ -1,9 +1,10 @@
 import React, { useState, useRef } from 'react';
 import emailjs from '@emailjs/browser';
+import './ContactForm.css'; // Import the CSS file
 
 const ContactForm = () => {
   const form = useRef();
-  
+
   // Estado único para múltiplos campos
   const [formData, setFormData] = useState({
     user_name: '',
@@ -38,22 +39,25 @@ const ContactForm = () => {
   };
 
   return (
-    <form ref={form} onSubmit={sendEmail} style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '400px' }}>
-      <input type="text" name="user_name" placeholder="Nome" value={formData.user_name} onChange={handleChange} required />
-      <input type="email" name="user_email" placeholder="E-mail" value={formData.user_email} onChange={handleChange} required />
-      <input type="text" name="user_phone" placeholder="Telefone" value={formData.user_phone} onChange={handleChange} />
-      <input type="text" name="user_subject" placeholder="Assunto" value={formData.user_subject} onChange={handleChange} />
-      
-      <select name="service_type" value={formData.service_type} onChange={handleChange}>
-        <option value="Suporte">Suporte Técnico</option>
-        <option value="Vendas">Vendas</option>
-        <option value="Outros">Outros</option>
-      </select>
+    <div className="contact-form-container">
+      <h2>Solicitação de Serviços</h2>
+      <form ref={form} onSubmit={sendEmail} className="contact-form">
+        <input type="text" name="user_name" placeholder="Nome" value={formData.user_name} onChange={handleChange} required />
+        <input type="email" name="user_email" placeholder="E-mail" value={formData.user_email} onChange={handleChange} required />
+        <input type="text" name="user_phone" placeholder="Telefone" value={formData.user_phone} onChange={handleChange} />
+        <input type="text" name="user_subject" placeholder="Assunto" value={formData.user_subject} onChange={handleChange} />
+        
+        <select name="service_type" value={formData.service_type} onChange={handleChange}>
+          <option value="Suporte">Suporte Técnico</option>
+          <option value="Vendas">Vendas</option>
+          <option value="Outros">Outros</option>
+        </select>
 
-      <textarea name="message" placeholder="Sua mensagem" value={formData.message} onChange={handleChange} required />
-      
-      <button type="submit">Enviar Formulário</button>
-    </form>
+        <textarea name="message" placeholder="Sua mensagem" value={formData.message} onChange={handleChange} required />
+        
+        <button type="submit">Enviar Formulário</button>
+      </form>
+    </div>
   );
 };
 
