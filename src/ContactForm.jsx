@@ -1,18 +1,60 @@
-import './ContactForm.css';
+import React, { useState, useRef } from 'react';
+import emailjs from '@emailjs/browser';
 
-function ContactForm() {
-  return (
-    <div className="contact-form-container">
-      <form name="contact" method="POST" data-netlify="true">
-  <input type="hidden" name="form-name" value="contact" />
+const ContactForm = () => {
+  const form = useRef();
   
-  <input type="text" name="name" placeholder="Nome" required />
-  <input type="text" name="phone" placeholder="Telefone" required />
-  <textarea name="message" placeholder="Mensagem" required></textarea>
-  <button type="submit">Enviar</button>
-</form>
-    </div>
+  // Estado único para múltiplos campos
+  const [formData, setFormData] = useState({
+    user_name: '',
+    user_email: '',
+    user_phone: '',
+    user_subject: '',
+    service_type: 'Geral',
+    message: ''
+  });
+
+  // Função para atualizar qualquer campo dinamicamente
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    // Substitua pelos seus IDs do painel EmailJS
+    const SERVICE_ID = 'service_kvcp0km';
+    const TEMPLATE_ID = 'template_vhpvshi';
+    const PUBLIC_KEY = 'E6GOsonlO0hHTuhot';
+
+    emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY)
+      .then((result) => {
+          alert('Mensagem enviada com sucesso!');
+          setFormData({ user_name: '', user_email: '', user_phone: '', user_subject: '', service_type: 'Geral', message: '' });
+      }, (error) => {
+          alert('Erro ao enviar: ' + error.text);
+      });
+  };
+
+  return (
+    <form ref={form} onSubmit={sendEmail} style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '400px' }}>
+      <input type="text" name="user_name" placeholder="Nome" value={formData.user_name} onChange={handleChange} required />
+      <input type="email" name="user_email" placeholder="E-mail" value={formData.user_email} onChange={handleChange} required />
+      <input type="text" name="user_phone" placeholder="Telefone" value={formData.user_phone} onChange={handleChange} />
+      <input type="text" name="user_subject" placeholder="Assunto" value={formData.user_subject} onChange={handleChange} />
+      
+      <select name="service_type" value={formData.service_type} onChange={handleChange}>
+        <option value="Suporte">Suporte Técnico</option>
+        <option value="Vendas">Vendas</option>
+        <option value="Outros">Outros</option>
+      </select>
+
+      <textarea name="message" placeholder="Sua mensagem" value={formData.message} onChange={handleChange} required />
+      
+      <button type="submit">Enviar Formulário</button>
+    </form>
   );
-}
+};
 
 export default ContactForm;
