@@ -24,9 +24,9 @@ const ContactForm = () => {
     e.preventDefault();
 
     // Substitua pelos seus IDs do painel EmailJS
-    const SERVICE_ID = 'service_kvcp0km';
-    const TEMPLATE_ID = 'template_vhpvshi';
-    const PUBLIC_KEY = 'E6GOsonlO0hHTuhot';
+    const SERVICE_ID = 'service_m4gyd3p';
+    const TEMPLATE_ID = 'template_2tu9n8o';
+    const PUBLIC_KEY = 'QGdLqCftMp1SGZDvK';
 
     emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY)
       .then((result) => {
