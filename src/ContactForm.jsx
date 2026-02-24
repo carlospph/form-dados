@@ -26,7 +26,7 @@ const ContactForm = () => {
 
     // Substitua pelos seus IDs do painel EmailJS
     const SERVICE_ID = 'service_m4gyd3p';
-    const TEMPLATE_ID = 'template_2tu9n8o';
+    const TEMPLATE_ID = 'template_b2nnjwg';
     const PUBLIC_KEY = 'QGdLqCftMp1SGZDvK';
 
     emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, form.current, PUBLIC_KEY)
