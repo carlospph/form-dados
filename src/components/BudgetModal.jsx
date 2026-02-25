@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 
-// Estilos para o Modal (não precisam ser alterados)
+const priceList = {
+    latex: 8,      // R$ 8/m²
+    acrilica: 10,   // R$ 10/m²
+    esmalte: 12,    // R$ 12/m²
+    epoxi: 15,      // R$ 15/m²
+};
+
 const customStyles = {
   content: {
     top: '50%',
@@ -26,7 +32,6 @@ const customStyles = {
 Modal.setAppElement('#root');
 
 const BudgetModal = ({ isOpen, onRequestClose, onSave }) => {
-    // Estado para todos os campos do formulário
     const [formData, setFormData] = useState({
         paintingType: 'latex',
         colorType: 'solidas',
@@ -34,6 +39,18 @@ const BudgetModal = ({ isOpen, onRequestClose, onSave }) => {
         environmentType: 'residencial',
         details: ''
     });
+    const [totalPrice, setTotalPrice] = useState(0);
+
+    useEffect(() => {
+        const { paintingType, area } = formData;
+        if (paintingType && area > 0) {
+            const pricePerMeter = priceList[paintingType];
+            const calculatedPrice = pricePerMeter * parseFloat(area);
+            setTotalPrice(calculatedPrice);
+        } else {
+            setTotalPrice(0);
+        }
+    }, [formData.paintingType, formData.area]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -41,13 +58,15 @@ const BudgetModal = ({ isOpen, onRequestClose, onSave }) => {
     };
 
     const handleSave = () => {
-        // Validação simples
         if (!formData.area || !formData.details.trim()) {
             alert('Por favor, preencha o tamanho do ambiente e os detalhes do orçamento.');
             return;
         }
-        onSave(formData); // Envia o objeto completo
-        // Reseta o formulário, exceto os selects que têm valor padrão
+        const budgetData = {
+            ...formData,
+            totalPrice: totalPrice,
+        };
+        onSave(budgetData);
         setFormData({
             paintingType: 'latex',
             colorType: 'solidas',
@@ -55,9 +74,9 @@ const BudgetModal = ({ isOpen, onRequestClose, onSave }) => {
             environmentType: 'residencial',
             details: ''
         });
+        setTotalPrice(0);
     };
     
-    // Estilos para os componentes do formulário
     const labelStyle = { display: 'block', marginBottom: '5px', fontWeight: 'bold' };
     const inputStyle = { width: '100%', padding: '10px', marginBottom: '15px', borderRadius: '4px', border: '1px solid #ccc' };
 
@@ -72,10 +91,10 @@ const BudgetModal = ({ isOpen, onRequestClose, onSave }) => {
             
             <label style={labelStyle}>Tipo de Pintura</label>
             <select name="paintingType" value={formData.paintingType} onChange={handleChange} style={inputStyle}>
-                <option value="latex">Látex (PVA)</option>
-                <option value="acrilica">Acrílica</option>
-                <option value="epoxi">Epóxi</option>
-                <option value="esmalte">Esmalte Sintético</option>
+                <option value="latex">Látex (PVA) - R$ 8/m²</option>
+                <option value="acrilica">Acrílica - R$ 10/m²</option>
+                <option value="epoxi">Epóxi - R$ 15/m²</option>
+                <option value="esmalte">Esmalte Sintético - R$ 12/m²</option>
             </select>
 
             <label style={labelStyle}>Seleção de Cores</label>
@@ -112,6 +131,14 @@ const BudgetModal = ({ isOpen, onRequestClose, onSave }) => {
                 placeholder="Ex: preparar a parede, pintar o teto de branco, etc."
                 style={{ ...inputStyle, height: '120px', resize: 'vertical' }}
             />
+
+            {totalPrice > 0 && (
+                <div style={{ marginTop: '20px', padding: '15px', backgroundColor: '#e9f5ff', borderRadius: '5px', textAlign: 'center', border: '1px solid #b3d7ff' }}>
+                    <h3 style={{ margin: 0, color: '#005fcc' }}>
+                        Valor Estimado: {totalPrice.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                    </h3>
+                </div>
+            )}
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '20px' }}>
                 <button onClick={onRequestClose} style={{ padding: '10px 20px', marginRight: '10px', borderRadius: '5px', border: '1px solid #ccc', background: '#f0f0f0', cursor: 'pointer' }}>Cancelar</button>

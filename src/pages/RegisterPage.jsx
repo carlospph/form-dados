@@ -58,7 +58,7 @@ const RegisterPage = () => {
     return (
         <>
             <Header />
-            <div className="register-page">
+            <div className="register-page ptt">
                 <div className="register-container">
                     <div className="register-header">
                         <h2>Crie sua Conta</h2>

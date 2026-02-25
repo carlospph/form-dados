@@ -1,0 +1,47 @@
+.summary-container {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.summary-card {
+    width: 160px; /* Set a fixed width */
+    padding: 12px; /* Fine-tune padding */
+    border-radius: 8px;
+    color: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: transform 0.2s ease;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+.summary-card:hover {
+    transform: translateY(-3px);
+}
+
+.approved-card {
+    background: linear-gradient(135deg, #28a745, #218838);
+}
+
+.pending-card {
+    background: linear-gradient(135deg, #ffc107, #e0a800);
+    color: #333;
+}
+
+.summary-card h4 {
+    margin: 0 0 5px;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.summary-count {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin: 0;
+}
+
+.summary-total {
+    font-size: 0.8em;
+    margin: 3px 0 0;
+    font-weight: 500;
+}

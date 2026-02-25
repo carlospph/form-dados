@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../config/firebase';
-import { doc, getDoc, collection, addDoc, query, where, onSnapshot, serverTimestamp, getDocs } from "firebase/firestore";
+import { doc, getDoc, collection, addDoc, query, where, onSnapshot, serverTimestamp, getDocs, deleteDoc, updateDoc } from "firebase/firestore";
 import BudgetModal from '../components/BudgetModal';
+import Summary from '../components/Summary';
+import './DashboardPage.css';
 
 const DashboardPage = () => {
     const navigate = useNavigate();
@@ -10,6 +12,19 @@ const DashboardPage = () => {
     const [budgets, setBudgets] = useState([]);
     const [loading, setLoading] = useState(true);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [editingBudget, setEditingBudget] = useState(null);
+
+    const displayOrder = [
+        'createdAt',
+        'expiresAt',
+        'environmentType',
+        'area',
+        'paintingType',
+        'colorType',
+        'details',
+        'totalPrice',
+        'status'
+    ];
 
     useEffect(() => {
         let unsubscribeFromBudgets = () => {};
@@ -18,26 +33,23 @@ const DashboardPage = () => {
                 try {
                     const userDocPromise = getDoc(doc(db, "users", user.uid));
                     const budgetsQuery = query(collection(db, "budgets"), where("userId", "==", user.uid));
-                    const initialBudgetsPromise = getDocs(budgetsQuery);
-
-                    const [userDocSnap, initialBudgetsSnapshot] = await Promise.all([
-                        userDocPromise,
-                        initialBudgetsPromise,
-                    ]);
-
-                    if (userDocSnap.exists()) {
-                        setUserData(userDocSnap.data());
-                    }
-                    const initialBudgets = initialBudgetsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                    setBudgets(initialBudgets);
-
+                    
                     unsubscribeFromBudgets = onSnapshot(budgetsQuery, (snapshot) => {
                         const updatedBudgets = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                         setBudgets(updatedBudgets);
+                        setLoading(false);
+                    }, (error) => {
+                        console.error("Error listening to budget changes:", error);
+                        setLoading(false);
                     });
+
+                    const userDocSnap = await userDocPromise;
+                    if (userDocSnap.exists()) {
+                        setUserData(userDocSnap.data());
+                    }
+
                 } catch (error) {
                     console.error("Error during initial data fetch:", error);
-                } finally {
                     setLoading(false);
                 }
             } else {
@@ -65,15 +77,26 @@ const DashboardPage = () => {
         const user = auth.currentUser;
         if (user) {
             try {
-                const expirationDate = new Date();
-                expirationDate.setDate(expirationDate.getDate() + 7);
-
-                await addDoc(collection(db, "budgets"), {
-                    userId: user.uid,
-                    ...formData, // Salva todos os dados do formulário
-                    createdAt: serverTimestamp(),
-                    expiresAt: expirationDate,
-                });
+                if (editingBudget) {
+                    const budgetRef = doc(db, "budgets", editingBudget.id);
+                    await updateDoc(budgetRef, formData);
+                    setEditingBudget(null);
+                } else {
+                    if (budgets.length >= 3) {
+                        alert("Você pode criar no máximo 3 orçamentos. Apague um existente para criar um novo.");
+                        setModalIsOpen(false);
+                        return;
+                    }
+                    const expirationDate = new Date();
+                    expirationDate.setDate(expirationDate.getDate() + 7);
+                    await addDoc(collection(db, "budgets"), {
+                        userId: user.uid,
+                        ...formData,
+                        createdAt: serverTimestamp(),
+                        expiresAt: expirationDate,
+                        status: 'Pendente'
+                    });
+                }
                 setModalIsOpen(false);
             } catch (error) {
                 console.error("Erro ao salvar orçamento:", error);
@@ -82,11 +105,47 @@ const DashboardPage = () => {
         }
     };
 
+    const handleDelete = async (id) => {
+        if (window.confirm("Tem certeza que deseja excluir este orçamento? Esta ação é irreversível.")) {
+            try {
+                await deleteDoc(doc(db, "budgets", id));
+            } catch (error) {
+                console.error("Erro ao excluir orçamento: ", error);
+                alert("Erro ao excluir orçamento.");
+            }
+        }
+    };
+
+    const handleEdit = (budget) => {
+        setEditingBudget(budget);
+        setModalIsOpen(true);
+    };
+    
+    const handleApproveBudget = async (id) => {
+        if (window.confirm("Tem certeza que deseja aprovar este orçamento? Após a aprovação, ele não poderá mais ser editado.")) {
+            try {
+                const budgetRef = doc(db, "budgets", id);
+                await updateDoc(budgetRef, { status: 'Aprovado' });
+            } catch (error) {
+                console.error("Erro ao aprovar orçamento: ", error);
+                alert("Erro ao aprovar orçamento.");
+            }
+        }
+    };
+
+    const openNewBudgetModal = () => {
+        if (budgets.length >= 3) {
+            alert("Você pode criar no máximo 3 orçamentos. Apague um existente para criar um novo.");
+        } else {
+            setEditingBudget(null);
+            setModalIsOpen(true);
+        }
+    };
+
     if (loading) {
-        return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>Carregando...</div>;
+        return <div className="loading-container">Carregando...</div>;
     }
 
-    // Helper para capitalizar e formatar os nomes dos campos
     const formatLabel = (key) => {
         const labels = {
             paintingType: "Tipo de Pintura",
@@ -95,60 +154,117 @@ const DashboardPage = () => {
             area: "Área (m²)",
             details: "Detalhes Adicionais",
             createdAt: "Criado em",
-            expiresAt: "Válido até"
+            expiresAt: "Válido até",
+            totalPrice: "Preço Total",
+            status: "Status"
         };
         return labels[key] || key.charAt(0).toUpperCase() + key.slice(1);
     };
 
+    const getStatusClass = (status) => {
+        switch (status) {
+            case 'Pendente':
+                return 'status-pending';
+            case 'Aprovado':
+                return 'status-approved';
+            default:
+                return 'status-pending';
+        }
+    };
+
     return (
-        <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-            <h1>Painel de Controle</h1>
-            <p>Bem-vindo à sua área restrita!</p>
-
-            {userData && (
-                <div style={{ background: '#f4f4f4', padding: '15px', borderRadius: '8px', marginTop: '20px', marginBottom: '20px' }}>
-                    <p><strong>Nome:</strong> {userData.nome}</p>
-                    <p><strong>Email:</strong> {userData.email}</p>
+        <div className="dashboard-page">
+            <div className="dashboard-header">
+                <div className="header-content">
+                    <h1>Painel de Controle</h1>
+                    <button onClick={handleLogout} className="logout-button">
+                        Sair
+                    </button>
                 </div>
-            )}
-
-            <button onClick={() => setModalIsOpen(true)} style={{ padding: '12px 25px', background: '#007bff', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer', fontSize: '16px' }}>
-                + Gerar Novo Orçamento
-            </button>
-
-            <div className="budgets-section" style={{ marginTop: '30px' }}>
-                <h2>Meus Orçamentos</h2>
-                {budgets.length > 0 ? (
-                    budgets.map(budget => (
-                        <div key={budget.id} style={{ background: '#fff', border: '1px solid #ddd', padding: '20px', borderRadius: '8px', marginTop: '15px', boxShadow: '0 2px 5px rgba(0,0,0,0.05)' }}>
-                            {Object.entries(budget).map(([key, value]) => {
-                                if (['userId', 'id'].includes(key)) return null; // Não exibe o ID do usuário ou do orçamento
-                                
-                                let displayValue = value;
-                                if (value && typeof value.toDate === 'function') { // Formata datas do Firestore
-                                    displayValue = value.toDate().toLocaleDateString();
-                                }
-
-                                return (
-                                    <p key={key}><strong>{formatLabel(key)}:</strong> {displayValue}</p>
-                                );
-                            })}
-                        </div>
-                    ))
-                ) : (
-                    <p style={{ marginTop: '20px' }}>Você ainda não tem orçamentos. Clique no botão acima para criar um!</p>
-                )}
+                <p>Bem-vindo à sua área restrita!</p>
             </div>
 
-            <button onClick={handleLogout} style={{ marginTop: '30px', padding: '10px 20px', background: '#dc3545', color: 'white', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-                Sair
-            </button>
+            <div className="dashboard-content">
+                {userData && (
+                    <div className="user-info-box">
+                        <p><strong>Nome:</strong> {userData.nome}</p>
+                        <p><strong>Email:</strong> {userData.email}</p>
+                    </div>
+                )}
+                <div className="main-actions-container">
+                    <button 
+                        onClick={openNewBudgetModal} 
+                        className={`new-budget-button ${budgets.length >= 3 ? 'disabled' : ''}`}
+                        disabled={budgets.length >= 3}
+                        title={budgets.length >= 3 ? "Você atingiu o limite de 3 orçamentos." : "Gerar um novo orçamento"}
+                    >
+                        + Gerar Novo Orçamento
+                    </button>
+                    <Summary budgets={budgets} />
+                </div>
 
-            <BudgetModal 
-                isOpen={modalIsOpen} 
-                onRequestClose={() => setModalIsOpen(false)} 
-                onSave={handleSaveBudget} 
-            />
+                <div className="budgets-section">
+                    <h2>Meus Orçamentos</h2>
+                    {budgets.length > 0 ? (
+                        <div className="budgets-grid">
+                            {budgets.map(budget => (
+                                <div key={budget.id} className="budget-card">
+                                    <div className="budget-card-content">
+                                        {displayOrder.map(key => {
+                                            const value = budget[key];
+                                            if (value === undefined && key !== 'status') return null;
+
+                                            if (key === 'status') {
+                                                const statusValue = budget.status || 'Pendente';
+                                                return (
+                                                    <p key={key}><strong>{formatLabel(key)}:</strong> <span className={`status-label ${getStatusClass(statusValue)}`}>{statusValue}</span></p>
+                                                );
+                                            }
+                                            
+                                            let displayValue = value;
+                                            if (value && typeof value.toDate === 'function') {
+                                                displayValue = value.toDate().toLocaleDateString();
+                                            } else if (key === 'totalPrice') {
+                                                displayValue = (value || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                                            }
+
+                                            return (
+                                                <p key={key}><strong>{formatLabel(key)}:</strong> {displayValue || '-'}</p>
+                                            );
+                                        })}
+                                    </div>
+                                    <div className="budget-card-actions">
+                                        {budget.status !== 'Aprovado' ? (
+                                            <>
+                                                <button onClick={() => handleApproveBudget(budget.id)} className="icon-button approve-button" title="Aprovar">&#x2713;</button>
+                                                <button onClick={() => handleEdit(budget)} className="icon-button edit-button" title="Editar">&#x270E;</button>
+                                                <button onClick={() => handleDelete(budget.id)} className="icon-button delete-button" title="Excluir">&#x1F5D1;</button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <p className="approved-message">Orçamento Aprovado!</p>
+                                                <button onClick={() => handleDelete(budget.id)} className="icon-button delete-button" title="Excluir">&#x1F5D1;</button>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <p style={{ marginTop: '20px' }}>Você ainda não tem orçamentos. Clique no botão acima para criar um!</p>
+                    )}
+                </div>
+
+                <BudgetModal 
+                    isOpen={modalIsOpen}
+                    onRequestClose={() => {
+                        setModalIsOpen(false);
+                        setEditingBudget(null);
+                    }}
+                    onSave={handleSaveBudget} 
+                    editingBudget={editingBudget}
+                />
+            </div>
         </div>
     );
 };

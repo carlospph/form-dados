@@ -184,7 +184,7 @@ function HomeTintas() {
   const tops = [
     {
       id: 1,
-      titulo: "Pintura externa------555",
+      titulo: "Pintura externa",
       imagem: "https://images.unsplash.com/photo-1641408881526-cd924c665c2d?q=80&w=685&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       descricao: "Pintura externa com tinta impermeabilizante"
     },
