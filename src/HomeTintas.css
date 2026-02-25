@@ -96,8 +96,6 @@
     grid-template-columns: 1fr 1fr;
     gap: 3rem;
     align-items: center;
-    border:7px solid red;
-
   }
   
   .hero-text h1 {

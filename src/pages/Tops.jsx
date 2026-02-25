@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import '../HomeTintas.css';
+//import '../HomeTintas.css';
 import './Tops.css';
 
 const tops = [
@@ -19,7 +19,7 @@ const tops = [
     {
         id: 2,
         titulo: "Pintura Interna",
-        imagem: "https://images.unsplash.com/photo-1596184133584-2a9d81b4d327?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        imagem: "https://plus.unsplash.com/premium_photo-1683120673588-682452cc83a0?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
         descricao: "Pintura rústica com efeitos especiais",
         detalhes: "A pintura interna é a alma da sua casa. Com as cores e texturas certas, você pode criar ambientes aconchegantes e cheios de personalidade. Trabalhamos com diversas técnicas, como a pintura rústica, que traz um charme especial para qualquer cômodo.",
         thumbnails: [
@@ -59,7 +59,7 @@ const Tops = () => {
                 </nav>
             </header>
             <section className="hero">
-                <div className="hero-content">
+                <div className="hero-content-top">
                     <div className="form-container">
                         <img src={selectedImage} alt={top.titulo} className="main-image" />
                         <div className="thumbnail-gallery">
