@@ -6,7 +6,6 @@
 
 @media (min-width: 769px) {
     .hero-content-top {
-        border:5px solid red;
         display: grid;
         grid-template-columns: 1fr 1fr;
     }
@@ -46,4 +45,14 @@
 .thumbnail.active {
     opacity: 1;
     border: 2px solid #007bff;
+}
+
+.hero-text-top{
+    color: white;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
 }

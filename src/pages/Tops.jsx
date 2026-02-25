@@ -74,7 +74,7 @@ const Tops = () => {
                             ))}
                         </div>
                     </div>
-                    <div className="hero-text">
+                    <div className="hero-text-top">
                         <h1>{top.titulo}</h1>
                         <p>{top.detalhes}</p>
                         <Link to="/">
