@@ -172,13 +172,7 @@ function HomeTintas() {
       imagem: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
       descricao: "Pintura externa com tinta impermeabilizante"
     },
-    {
-      id: 3,
-      titulo: "Casa de Campo",
-      categoria: "Residencial",
-      imagem: "https://images.unsplash.com/photo-1719348048620-45ed61fc0b48?q=80&w=680&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      descricao: "Pintura rústica com efeitos especiais"
-    },
+    
     {
       id: 4,
       titulo: "Escritório Corporativo",
@@ -190,14 +184,14 @@ function HomeTintas() {
   const tops = [
     {
       id: 1,
-      titulo: "Pintura externa",
-      imagem: "https://plus.unsplash.com/premium_photo-1683140636442-87a7d5794711?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      titulo: "Pintura externa------555",
+      imagem: "https://images.unsplash.com/photo-1641408881526-cd924c665c2d?q=80&w=685&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       descricao: "Pintura externa com tinta impermeabilizante"
     },
     {
       id: 2,
       titulo: "Pintura interna",
-      imagem: "https://images.unsplash.com/photo-1596184133584-2a9d81b4d327?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      imagem: "https://plus.unsplash.com/premium_photo-1683120673588-682452cc83a0?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       descricao: "Pintura rústica com efeitos especiais"
     }
   ]
