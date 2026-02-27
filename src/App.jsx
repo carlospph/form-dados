@@ -5,7 +5,6 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage'; // Import the DashboardPage
 import ProtectedRoute from './components/ProtectedRoute'; // Import the ProtectedRoute
-import './App.css';
 
 function App() {
   return (
