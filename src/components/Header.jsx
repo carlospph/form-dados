@@ -31,7 +31,19 @@ const Header = () => {
                     )
                 }
 
-                <i className="fas fa-bars" onClick={toggleMenu}></i>
+                <button className="lg:hidden">
+                    <i className="fas fa-bars" onClick={toggleMenu}></i>
+                </button>
+
+                <ul className="lg:flex gap-6 hidden">
+                    <li><a href="/#home">Home</a></li>
+                    <li><a href="/#servicos">Serviços</a></li>
+                    <li><a href="/#servicos-detalhados">Serviços Detalhados</a></li>
+                    <li><a href="/#projetos">Projetos</a></li>
+                    <li><a href="/#contato">Contato</a></li>
+                    <li><a href="/#tops">Os Tops</a></li>
+                    <li><Link to="/login">Login</Link></li>
+                </ul>
             </nav>
         </header>
     );

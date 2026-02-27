@@ -3,8 +3,8 @@ import HomeTintas from "./HomeTintas";
 import Tops from './pages/Tops';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import DashboardPage from './pages/DashboardPage'; // Import the DashboardPage
-import ProtectedRoute from './components/ProtectedRoute'; // Import the ProtectedRoute
+import DashboardPage from './pages/DashboardPage';  
+import ProtectedRoute from './components/ProtectedRoute';  
 
 function App() {
   return (
