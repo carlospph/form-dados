@@ -58,16 +58,16 @@ const RegisterPage = () => {
     return (
         <>
             <Header />
-            <div className="px-2 pt-[100px] pb-8 bg-gray-200">
-                <div className="shadow-md px-3 bg-white rounded-lg py-8">
+            <div className="px-4 pt-[100px] pb-8 bg-gray-200">
+                <div className="shadow-md px-2 bg-white rounded-lg py-8">
                     <div className="text-center">
                         <h2 className="text-5xl font-bold">Crie sua Conta</h2>
                         <p className="py-3">É rápido e fácil. Vamos começar!</p>
                     </div>
-                    <form onSubmit={handleSubmit} className="register-form">
+                    <form onSubmit={handleSubmit} className="max-w-6xl mx-auto">
                         {error && <div className="error-message">{error}</div>}
 
-                <div className="lg:grid lg:grid-cols-2 lg:gap-8 max-w-6xl mx-auto">
+                <div className="lg:grid lg:grid-cols-2 lg:gap-8 max-w-6xl mx-auto md:px-12 flex flex-col gap-4">
                         <div className="form-group">
                             <label htmlFor="nome">Nome Completo</label>
                             <input
@@ -120,7 +120,7 @@ const RegisterPage = () => {
                             />
                         </div>
                         </div>
-                        <button type="submit" className="py-3 px-4 bg-green-600 text-white font-semibold text-[20px] mx-auto text-center">Cadastrar</button>
+                        <button type="submit" className="mt-10 py-3 px-4 bg-green-600 text-white font-semibold text-[20px] mx-auto text-center md:mx-12">Cadastrar</button>
                     </form>
                     <div className="register-footer">
                         <p className="text-center mb-4">Já tem uma conta? <Link to="/login">Faça login</Link></p>
