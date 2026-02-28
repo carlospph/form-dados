@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../config/firebase';
-import PasswordResetModal from '../components/PasswordResetModal'; // Importa o modal
-import '../HomeTintas.css'; // Estilos gerais
-import './LoginPage.css'; // Estilos da página de Login
+import PasswordResetModal from '../components/PasswordResetModal';
 import Header from '../components/Header';
 
 const LoginPage = () => {
@@ -13,7 +11,7 @@ const LoginPage = () => {
         password: ''
     });
     const [error, setError] = useState('');
-    const [modalIsOpen, setModalIsOpen] = useState(false); // Estado para o modal
+    const [modalIsOpen, setModalIsOpen] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -30,7 +28,7 @@ const LoginPage = () => {
 
         try {
             await signInWithEmailAndPassword(auth, formData.email, formData.password);
-            navigate('/dashboard'); // Redireciona para o painel do usuário
+            navigate('/dashboard');
         } catch (error) {
             setError("Falha no login. Verifique seu e-mail e senha.");
             console.error("Login error:", error);
@@ -50,21 +48,42 @@ const LoginPage = () => {
         }
     };
 
+    // Variáveis para TailwindCss
+
+    const styledBody = "flex flex-col items-center justify-center min-h-screen bg-gray-100 p-3 pt-[5em]";
+
+    const styleContainerForm = "bg-white shadow-md rounded-lg px-2 pt-8 pb-10 w-full max-w-sm";
+
+    const styleTitle = "text-2xl font-bold text-center mb-4 md:text-5xl";
+
+    const styleTema = "text-center text-gray-600 mb-6 md:text-2xl";
+
+    const styleMsgErro = "text-red-500 text-center mb-4";
+
+    const styleButton = "w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition duration-200";
+
+    const styleContainerLinks = "flex flex-col items-center mt-5";
+
+    const styleLink = "text-blue-600 hover:underline m-3";
+
+    const styleFiel = "border-2 border-gray-200 block mt-2 py-3 px-2 w-full rounded-lg md:text-[20px]";
+
     return (
         <>
-        <Header/>
-            <div className="pt-12"></div>
-            <div className="login-container">
-                <div className="login-card">
-                    <h2>Login</h2>
-                    <p>Acesse seu painel para gerenciar seus orçamentos.</p>
-                    
-                    {error && <p className="error-message">{error}</p>}
-                    
-                    <form onSubmit={handleSubmit} className="login-form">
-                        <div className="form-group">
+            <Header />
+            <div className={styledBody}>
+                <div className={styleContainerForm}>
+                    <h2 className={styleTitle}>Área de Login</h2>
+                    <p className={styleTema}>Acesse seu painel para gerenciar seus orçamentos.</p>
+
+                    {error && <p className={styleMsgErro}>{error}</p>}
+
+                    <form onSubmit={handleSubmit} className="space-y-4">
+
+                        {/*Campo email */}
+                        <div>
                             <label htmlFor="email">E-mail</label>
-                            <input 
+                            <input
                                 type="email"
                                 id="email"
                                 name="email"
@@ -72,11 +91,13 @@ const LoginPage = () => {
                                 value={formData.email}
                                 onChange={handleChange}
                                 required
+                                className={styleFiel}
                             />
                         </div>
-                        <div className="form-group">
+                        {/* Campo senha */}
+                        <div>
                             <label htmlFor="password">Senha</label>
-                            <input 
+                            <input
                                 type="password"
                                 id="password"
                                 name="password"
@@ -84,18 +105,21 @@ const LoginPage = () => {
                                 value={formData.password}
                                 onChange={handleChange}
                                 required
+                                className={styleFiel}
                             />
                         </div>
-                        
-                        <button type="submit" className="login-btn">Entrar</button>
+
+                        <button type="submit" className={styleButton}>Entrar</button>
                     </form>
-                    <div className="login-footer">
-                        <p>Não tem uma conta? <Link to="/register">Cadastre-se</Link></p>
-                        <p><a href="#" onClick={() => setModalIsOpen(true)} style={{color: '#007bff', textDecoration: 'none'}}>Esqueci minha senha</a></p>
+                    <div className={styleContainerLinks}>
+                        <p>Não tem uma conta? <Link to="/register" className={styleLink}>Cadastre-se</Link></p>
+                        <p>
+                            <a href="#" onClick={() => setModalIsOpen(true)} className={styleLink}>Esqueci minha senha</a>
+                        </p>
                     </div>
                 </div>
             </div>
-            <PasswordResetModal 
+            <PasswordResetModal
                 isOpen={modalIsOpen}
                 onRequestClose={() => setModalIsOpen(false)}
                 onSubmit={handlePasswordResetRequest}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../HomeTintas.css';
 import RegisterPage from '../pages/RegisterPage';
+import { LogoMarca } from './Utils/LogoMarca';
 
 const Header = () => {
     const [visible, setMenuVisible] = useState(false);
@@ -15,7 +16,9 @@ const Header = () => {
             <nav className="navbar">
 
                 <div className="logo">
-                    <Link to="/"><h1>Casa & Cores</h1></Link>
+                    <Link to="/">
+                        <LogoMarca/>
+                    </Link>
                 </div>
 
                 {
