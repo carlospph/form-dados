@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+
 import './DetalhesTops.css';
  import Header from '../components/Header.jsx';
 import { ContainerMax } from '../components/ContainerMax/ContainerMax.jsx';
@@ -49,6 +50,8 @@ const DetalhesTops = () => {
         setSelectedImage(image);
     };
 
+    const navigate = useNavigate();
+ 
     return (
 
         <>
@@ -56,15 +59,15 @@ const DetalhesTops = () => {
             <section className="pt-[8em] pb-8">
                 <ContainerMax>
                     <div className="md:grid md:grid-cols-2 gap-8 items-center px-3">
-                        <div className="flex flex-col gap-2">
-                            <img src={selectedImage} alt={top.titulo} className="h-[380px] w-full object-cover" />
+                         <div className="flex flex-col gap-2">
+                            <img src={selectedImage} alt={top.titulo} className="rounded-md h-[380px] w-full object-cover" />
                             <div className="grid grid-cols-3 gap-4">
                                 {top.thumbnails.map((thumbnail, index) => (
                                     <img
                                         key={index}
                                         src={thumbnail}
                                         alt={`Thumbnail ${index + 1}`}
-                                        className="w-full h-[90px] object-cover"
+                                        className={`thumbnail-item ${selectedImage === thumbnail ? 'active' : ''}`}
                                         onClick={() => handleThumbnailClick(thumbnail)}
                                     />
                                 ))}
@@ -73,9 +76,10 @@ const DetalhesTops = () => {
                         <div className="flex flex-col gap-5 lg:gap-8">
                             <h3 className="text-4xl font-bold mt-7 md:text-5xl lg:text-6xl">{top.titulo}</h3>
                             <p className="lg:text-[21px]">{top.detalhes}</p>
-                            <Link to="/">
-                                <button className="bg-blue-400 py-3 px-5 text-xl font-semibold text-white">Voltar</button>
-                            </Link>
+                            <button
+                                 onClick={()=>navigate(-1)}
+                                     className="bg-blue-500 py-3 px-5 text-xl font-semibold text-white cursor-pointer w-[100px]">Voltar
+                            </button>
                         </div>
                     </div>
                 </ContainerMax>

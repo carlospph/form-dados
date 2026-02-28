@@ -5,6 +5,7 @@ import { auth } from '../config/firebase';
 import PasswordResetModal from '../components/PasswordResetModal'; // Importa o modal
 import '../HomeTintas.css'; // Estilos gerais
 import './LoginPage.css'; // Estilos da página de Login
+import Header from '../components/Header';
 
 const LoginPage = () => {
     const [formData, setFormData] = useState({
@@ -51,7 +52,8 @@ const LoginPage = () => {
 
     return (
         <>
-            <div className="login-background"></div>
+        <Header/>
+            <div className="pt-12"></div>
             <div className="login-container">
                 <div className="login-card">
                     <h2>Login</h2>

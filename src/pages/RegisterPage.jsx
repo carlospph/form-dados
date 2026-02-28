@@ -58,14 +58,16 @@ const RegisterPage = () => {
     return (
         <>
             <Header />
-            <div className="register-page ptt">
-                <div className="register-container">
-                    <div className="register-header">
-                        <h2>Crie sua Conta</h2>
-                        <p>É rápido e fácil. Vamos começar!</p>
+            <div className="px-2 pt-[100px] pb-8 bg-gray-200">
+                <div className="shadow-md px-3 bg-white rounded-lg py-8">
+                    <div className="text-center">
+                        <h2 className="text-5xl font-bold">Crie sua Conta</h2>
+                        <p className="py-3">É rápido e fácil. Vamos começar!</p>
                     </div>
                     <form onSubmit={handleSubmit} className="register-form">
                         {error && <div className="error-message">{error}</div>}
+
+                <div className="lg:grid lg:grid-cols-2 lg:gap-8 max-w-6xl mx-auto">
                         <div className="form-group">
                             <label htmlFor="nome">Nome Completo</label>
                             <input
@@ -78,6 +80,7 @@ const RegisterPage = () => {
                                 required
                             />
                         </div>
+
                         <div className="form-group">
                             <label htmlFor="email">Email</label>
                             <input
@@ -90,6 +93,7 @@ const RegisterPage = () => {
                                 required
                             />
                         </div>
+
                         <div className="form-group">
                             <label htmlFor="password">Senha</label>
                             <input
@@ -102,6 +106,7 @@ const RegisterPage = () => {
                                 required
                             />
                         </div>
+
                         <div className="form-group">
                             <label htmlFor="confirmPassword">Confirme a Senha</label>
                             <input
@@ -114,10 +119,11 @@ const RegisterPage = () => {
                                 required
                             />
                         </div>
-                        <button type="submit" className="register-btn">Cadastrar</button>
+                        </div>
+                        <button type="submit" className="py-3 px-4 bg-green-600 text-white font-semibold text-[20px] mx-auto text-center">Cadastrar</button>
                     </form>
                     <div className="register-footer">
-                        <p>Já tem uma conta? <Link to="/login">Faça login</Link></p>
+                        <p className="text-center mb-4">Já tem uma conta? <Link to="/login">Faça login</Link></p>
                     </div>
                 </div>
             </div>
