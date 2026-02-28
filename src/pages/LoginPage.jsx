@@ -6,7 +6,9 @@ import PasswordResetModal from '../components/PasswordResetModal';
 import Header from '../components/Header';
 
 import { styles } from './LoginPage.styles.js';
-  
+import { Button } from '../components/Utils/Button.jsx';
+import { Campo } from '../components/Campo/Campo.jsx';
+
 const LoginPage = () => {
     const [formData, setFormData] = useState({
         email: '',
@@ -65,35 +67,33 @@ const LoginPage = () => {
                     <form onSubmit={handleSubmit} className="space-y-4">
 
                         {/*Campo email */}
-                        <div>
-                            <label htmlFor="email" className={styles.label}>E-mail</label>
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                placeholder="Digite seu e-mail"
-                                value={formData.email}
-                                onChange={handleChange}
-                                required
-                                className={styles.field}
-                            />
-                        </div>
+
                         {/* Campo senha */}
                         <div>
-                            <label htmlFor="password" className={styles.label}>Senha</label>
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                placeholder="Digite sua senha"
-                                value={formData.password}
+                            <Campo
+                                label="E-mail"
+                                type="email"
+                                name="email"
+                                placeholder="E-mail"
+                                value={formData.email}
                                 onChange={handleChange}
-                                required
-                                className={styles.field}
                             />
                         </div>
 
-                        <button type="submit" className={styles.button}>Entrar</button>
+                        <div>
+
+                            <Campo
+                                label="Senha"
+                                type="password"
+                                name="password"
+                                placeholder="Senha"
+                                value={formData.password}
+                                onChange={handleChange}
+                            />
+                        </div>
+
+                        <Button text="Realizar login" bgcolor="bg-blue-600" color="text-white" />
+
                     </form>
                     <div className={styles.containerLinks}>
                         <p>Não tem uma conta? <Link to="/register" className={styles.link}>Cadastre-se</Link></p>
