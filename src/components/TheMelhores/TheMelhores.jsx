@@ -16,15 +16,15 @@ const tops = [
     }
   ]
 
-const Tops = () => {
+export function TheMelhores(){
   return (
     <div>
       <section id="tops" className="projetos">
         <h2>Os Tops dos tops</h2>
         <p className="section-subtitle">Conheça os serviços mais pedidos</p>
-        <div className="flex flex-col gap-4">
+        <div className="projetos-grid">
           {tops.map(top => (
-            <Link to={`/detalhesTops/${top.id}`} key={top.id} className="projeto-card">
+            <Link to={`/tops/${top.id}`} key={top.id} className="projeto-card">
               <div className="projeto-image">
                 <img src={top.imagem} alt={top.titulo} loading="lazy" />
                 <div className="projeto-overlay">
@@ -41,5 +41,3 @@ const Tops = () => {
     </div>
   );
 };
-
-export default Tops;

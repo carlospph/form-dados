@@ -41,7 +41,6 @@ function HomeTintas() {
     }
 
     try {
-      // Aqui você pode integrar com seu backend ou serviço de email
       const response = await fetch('sua-api-endpoint', {
         method: 'POST',
         headers: {
