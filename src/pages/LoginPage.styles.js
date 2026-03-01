@@ -6,7 +6,7 @@ export const styles = {
     title: "text-2xl font-bold text-center mb-4 md:text-5xl",
     tema: "text-center text-gray-600 mb-6 md:text-2xl",
     label: "block text-sm font-semibold text-gray-700 mb-1",
-    msgErro: "text-red-500 text-center mb-4",
+    msgErro: "text-red-500 text-[13px] text-center mb-4 py-2 bg-red-200 leading-4 px-10",
     button: "w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-700 transition duration-200",
     containerLinks: "flex flex-col items-center mt-5",
     link: "text-blue-600 hover:underline m-3",

@@ -4,8 +4,7 @@ import Header from '../components/Header';
 import { auth, db } from '../config/firebase';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore"; 
-import './RegisterPage.css';
-
+ 
 const RegisterPage = () => {
     const [formData, setFormData] = useState({
         nome: '',

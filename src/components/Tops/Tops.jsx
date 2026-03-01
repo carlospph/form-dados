@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { TituloSessao } from '../Utils/TituloSessao';
  
  const tops = [
   {
@@ -19,7 +20,7 @@ import { Link } from 'react-router-dom';
 const Tops = () => {
   return (
     <section id="tops" className="projetos">
-      <h2>Os melhores projetos</h2>
+       <TituloSessao text="...Melhores projetos"/>
       <p className="section-subtitle">Conheça os serviços mais pedidos</p>
 
          <div className="flex flex-col gap-4 md:grid md:grid-cols-2 md:gap-16 max-w-6xl mx-auto">
